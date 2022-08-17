@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:meditation_app/constant.dart';
@@ -87,29 +88,30 @@ class HomeScreen extends StatelessWidget {
                   Expanded(
                     child: GridView.count(
                       crossAxisCount: 2,
+                      childAspectRatio: .85,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
                       children: [
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(13),
-                          ),
-                          child: Column(
-                            children: [
-                              Spacer(),
-                              SvgPicture.asset("assets/icons/Hamburger.svg"),
-                              Spacer(),
-                              Text(
-                                "Diet Recommendation",
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleSmall
-                                    ?.copyWith(fontSize: 15),
-                              ),
-                            ],
-                          ),
-                        )
+                        CategoryCard(
+                          title: "Diet Recommendation",
+                          svgSrc: "assets/icons/Hamburger.svg",
+                          press: () => {},
+                        ),
+                        CategoryCard(
+                          title: "Kegal Exercises",
+                          svgSrc: "assets/icons/Excrecises.svg",
+                          press: () => {},
+                        ),
+                        CategoryCard(
+                          title: "Meditation",
+                          svgSrc: "assets/icons/Meditation.svg",
+                          press: () => {},
+                        ),
+                        CategoryCard(
+                          title: "Yoga",
+                          svgSrc: "assets/icons/yoga.svg",
+                          press: () => {},
+                        ),
                       ],
                     ),
                   )
@@ -118,6 +120,62 @@ class HomeScreen extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+}
+
+class CategoryCard extends StatelessWidget {
+  final String svgSrc;
+  final String title;
+  final VoidCallback press;
+
+  const CategoryCard(
+      {Key? key,
+      required this.svgSrc,
+      required this.title,
+      required this.press})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(13),
+      child: Container(
+        //padding: EdgeInsets.all(20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(13),
+            boxShadow: [
+              BoxShadow(
+                  offset: Offset(0, 17),
+                  blurRadius: 17,
+                  spreadRadius: -23,
+                  color: kShadowColor)
+            ]),
+        child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: press,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    Spacer(),
+                    SvgPicture.asset(svgSrc),
+                    Spacer(),
+                    Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall
+                          ?.copyWith(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+            )),
       ),
     );
   }
