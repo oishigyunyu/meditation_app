@@ -1,7 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:meditation_app/constant.dart';
+import 'package:meditation_app/screens/details_screen.dart';
+import 'package:meditation_app/widgets/bottom_nav_bar.dart';
+import 'package:meditation_app/widgets/category_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +21,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: "Cairo",
         scaffoldBackgroundColor: kBackgroundColor,
-        textTheme: Theme.of(context).textTheme.apply(displayColor: kTextColor),
+        textTheme: Theme
+            .of(context)
+            .textTheme
+            .apply(displayColor: kTextColor),
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
@@ -31,9 +36,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context)
+    var size = MediaQuery
+        .of(context)
         .size; // this gonna give us total height and with of our device
     return Scaffold(
+      bottomNavigationBar: const BottomNavBar(),
       body: Stack(
         children: [
           Container(
@@ -66,14 +73,16 @@ class HomeScreen extends StatelessWidget {
                   ),
                   Text(
                     'Good Morning \nShishir',
-                    style: Theme.of(context)
+                    style: Theme
+                        .of(context)
                         .textTheme
                         .displaySmall
                         ?.copyWith(fontWeight: FontWeight.w900),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(vertical: 30),
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                    margin: const EdgeInsets.symmetric(vertical: 30),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(29.5),
@@ -110,7 +119,13 @@ class HomeScreen extends StatelessWidget {
                         CategoryCard(
                           title: "Yoga",
                           svgSrc: "assets/icons/yoga.svg",
-                          press: () => {},
+                          press: () {
+                            Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                                return const DetailScreen();
+                              }),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -120,62 +135,6 @@ class HomeScreen extends StatelessWidget {
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class CategoryCard extends StatelessWidget {
-  final String svgSrc;
-  final String title;
-  final VoidCallback press;
-
-  const CategoryCard(
-      {Key? key,
-      required this.svgSrc,
-      required this.title,
-      required this.press})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(13),
-      child: Container(
-        //padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(13),
-            boxShadow: [
-              BoxShadow(
-                  offset: Offset(0, 17),
-                  blurRadius: 17,
-                  spreadRadius: -23,
-                  color: kShadowColor)
-            ]),
-        child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: press,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    Spacer(),
-                    SvgPicture.asset(svgSrc),
-                    Spacer(),
-                    Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall
-                          ?.copyWith(fontSize: 15),
-                    ),
-                  ],
-                ),
-              ),
-            )),
       ),
     );
   }
